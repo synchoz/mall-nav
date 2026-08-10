@@ -1,0 +1,19 @@
+databases:
+  - name: mallnav-db
+    plan: free
+    databaseName: mallnav
+    user: mallnav
+
+services:
+  - type: web
+    name: mallnav-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mallnav-db
+          property: connectionString
