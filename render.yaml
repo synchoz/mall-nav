@@ -17,3 +17,5 @@ services:
         fromDatabase:
           name: mallnav-db
           property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.9
