@@ -17,6 +17,7 @@ mobile/*.iml
 # IDE
 .idea/
 .vscode/
+.vs/
 
 # OS
 .DS_Store

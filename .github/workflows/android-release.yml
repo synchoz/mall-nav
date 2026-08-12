@@ -1,0 +1,41 @@
+name: android-release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Build release APK
+        working-directory: mobile
+        run: |
+          flutter pub get
+          flutter build apk --release \
+            --dart-define=API_BASE_URL=https://mallnav-backend.onrender.com
+
+      # Manual (workflow_dispatch) runs just publish a downloadable build
+      # artifact on the run itself, no GitHub Release.
+      - if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mall-nav-debug-signed-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+
+      # Tag pushes (v1.0.0 etc.) cut a proper GitHub Release with the APK
+      # attached.
+      - if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: mobile/build/app/outputs/flutter-apk/app-release.apk
+          generate_release_notes: true
