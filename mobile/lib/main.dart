@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'repositories/mall_nav_repository.dart';
-import 'screens/home_screen.dart';
+import 'screens/app_shell.dart';
 import 'services/api_client.dart';
 import 'services/app_config.dart';
 
@@ -22,7 +22,7 @@ class MallNavApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mall Navigation',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-      home: HomeScreen(repository: repository),
+      home: AppShell(repository: repository),
     );
   }
 }
